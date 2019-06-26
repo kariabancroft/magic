@@ -8,7 +8,8 @@ class CardList extends React.Component {
     super(props);
 
     this.state = {
-      results: []
+      results: [],
+      loading: true
     }
   }
 
@@ -21,6 +22,9 @@ class CardList extends React.Component {
       .catch((error) => {
         this.setState({error: "Error has occurred"})
       })
+      .then(() => {
+        this.setState({loading: false})
+      })
   }
 
   componentDidMount() {
@@ -28,18 +32,25 @@ class CardList extends React.Component {
   }
 
   render() {
-    const cards = this.state.results.map((card, index) => {
-      return <Card key={index}
-        img={card.imageUrl}
-        artist={card.artist}
-        name={card.name}
-        originalType={card.type}
-        setName={card.setName} />
-    })
+    let data;
+
+    if (this.state.loading) {
+      data = <img className='loading' alt='loading indicator'
+        src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif' />
+    } else {
+      data = this.state.results.map((card, index) => {
+        return <Card key={index}
+          img={card.imageUrl}
+          artist={card.artist}
+          name={card.name}
+          originalType={card.type}
+          setName={card.setName} />
+      })
+    }
 
     return (
       <div className='card-list'>
-        {cards}
+        {data}
       </div>
     )
   }
