@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './CardList.css'
+import Card from './Card'
 
 class CardList extends React.Component {
   constructor(props) {
@@ -15,7 +16,6 @@ class CardList extends React.Component {
     const apiParams = '?type=creature&orderBy=name&pageSize=20'
     axios.get(process.env.REACT_APP_API_URL + apiParams)
       .then((response) => {
-        console.log(response.data.cards);
         this.setState({results: response.data.cards})
       })
       .catch((error) => {
@@ -28,8 +28,13 @@ class CardList extends React.Component {
   }
 
   render() {
-    const cards = this.state.results.map((card) => {
-      return card.name
+    const cards = this.state.results.map((card, index) => {
+      return <Card key={index}
+        img={card.imageUrl}
+        artist={card.artist}
+        name={card.name}
+        originalType={card.type}
+        setName={card.setName} />
     })
 
     return (
