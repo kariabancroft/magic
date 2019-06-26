@@ -13,7 +13,7 @@ class CardList extends React.Component {
     }
   }
 
-  loadCards = (page) => {    
+  loadCards = (page) => {
     axios.get(process.env.REACT_APP_API_URL, {
       params: {
         type: 'creature',
@@ -23,7 +23,8 @@ class CardList extends React.Component {
       }
     })
       .then((response) => {
-        this.setState({results: response.data.cards})
+        const updatedResults = this.state.results.concat(response.data.cards)
+        this.setState({results: updatedResults})
       })
       .catch((error) => {
         this.setState({error: 'Error has occurred. ' + error})
@@ -60,7 +61,7 @@ class CardList extends React.Component {
           {cards}
         </div>
       </InfiniteScroll>
-    )
+    )  
   }
 }
 
