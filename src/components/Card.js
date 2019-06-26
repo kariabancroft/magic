@@ -20,7 +20,7 @@ const Card = (props) => {
               {props.setName}
             </li>
             <li>
-              <strong>Original Type: </strong>
+              <strong>Original Type: </strong><br/>
               {props.originalType}
             </li>
           </ul>
