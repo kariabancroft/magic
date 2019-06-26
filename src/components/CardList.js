@@ -9,18 +9,20 @@ class CardList extends React.Component {
 
     this.state = {
       results: [],
-      loading: true
+      loading: true,
+      page: 0
     }
   }
 
   loadCards() {
-    const apiParams = '?type=creature&orderBy=name&pageSize=20'
+    const pageNum = (this.state.page + 1)
+    const apiParams = '?type=creature&orderBy=name&pageSize=20&page=' + pageNum
     axios.get(process.env.REACT_APP_API_URL + apiParams)
       .then((response) => {
-        this.setState({results: response.data.cards})
+        this.setState({results: response.data.cards, page: pageNum})
       })
       .catch((error) => {
-        this.setState({error: "Error has occurred"})
+        this.setState({error: 'Error has occurred. ' + error})
       })
       .then(() => {
         this.setState({loading: false})
@@ -48,8 +50,14 @@ class CardList extends React.Component {
       })
     }
 
+    let err;
+    if (this.state.error) {
+      err = <div className='error'>{this.state.error}</div>
+    }
+
     return (
       <div className='card-list'>
+        {err}
         {data}
       </div>
     )
